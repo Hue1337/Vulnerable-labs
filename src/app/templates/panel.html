@@ -1,0 +1,37 @@
+<html> 
+    <head>
+        <div>
+            <title>Central Humidity Updates for Journalists</title>
+            <link rel="stylesheet" href="../static/style.css">
+        </div>
+    </head>
+
+    <body>
+        <div id="top-header">
+            <center>
+                <h1>Central Humidity Updates for Journalists</h1>
+                <p>Control panel for users</p>
+            </center>   
+        </div>
+        
+        <div id="content-container">
+            <div id="menu">
+                <a href="panel.html">Change password</a>
+                <a href="panel.html">Account details</a>
+                <a href="index.html">Logout</a>
+            </div>
+
+            <div id="login">
+                <form action="/change_password" method="post">
+                    <label id="label1" for="current_password">Current Password:</label>
+                    <input type="password" id="current_password" name="current_password" required><br><br>
+                    <label id="label1" for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" required><br><br>
+                    <label id="label1" for="confirm_password">Confirm New Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+                    <input type="submit" value="Change Password">
+                </form>                
+            </div>
+        </div>
+    </body>
+</html>
