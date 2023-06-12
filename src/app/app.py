@@ -1,66 +1,75 @@
 from flask_session import Session
 from flask import Flask, render_template, request, session, redirect, flash
+import os
+from datetime import timedelta
 
 app = Flask(__name__)
-app.secret_key = 'aHVlMTMzNw=='
+Session(app)
 
-# Simulation for database
+# Inicjalizacja rozszerzenia
+app.config['SESSION_FILE_DIR'] = './.flask_session/'
+app.config['SESSION_COOKIE_SECURE'] = True  # Dla sesji HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Zabezpieczenie przed atakami XSS
+app.permanent_session_lifetime = timedelta(hours=24)
+app.config['SECRET_KEY'] = 'key'
+
+
 username = 'admin'
-password = 'p@ssw0rd!'
+password = 'password'
+
+
 
 @app.route('/')
-def hello_world():
-    print(session)
-    if 'username' in session:
-        token = 'token123'
-        return redirect(f'panel.html?token={token}')
+def home():
+    logged_in = session.get('logged_in')
+    if logged_in:
+        return render_template('/panel.html')
     else:
-        return render_template('index.html')
+        return render_template('/index.html')
 
 @app.route('/index.html')
-@app.route('/index.html?tkoen=<token>')
-def index(token, error=''):
-    return render_template('index.html', error=error)
+def index():
+    return render_template('index.html')
+
+# @app.route('/panel.html')
+# def panel():
+#     logged_in = session.get('logged_in')
+#     if logged_in:
+#         return render_template('panel.html')
+#     else:
+#         redirect('/index.html')
 
 @app.route('/panel.html', methods=['POST'])
 def panel():
-    tmp_username = request.form['username']
-    tmp_password = request.form['password']
-
-    if tmp_username == username and tmp_password == password:
+    logged_in = session.get('logged_in')
+    if logged_in:
         return render_template('panel.html')
+
     else:
-        return render_template('index.html',token='', error='Invalid username or password')
-    
-# @app.before_request
-# def check_login():
-#     if (request.path != '/index.html' and request.path != '/panel.index')  and username not in session and request.path != '/static/style.css':
-#         flash('You need to login first', 'error')
-#         return redirect('/index.html')
+        tmp_username = request.form['username']
+        tmp_password = request.form['password']
 
-@app.route('/change_password', methods=['POST'])
-def change_password():
-    current_password = request.form['current_password']
-    new_password = request.form['new_password']
-    confirm_password = request.form['confirm_password']
-
-    # Sprawdź, czy bieżące hasło jest poprawne
-    if current_password == password:
-        # Sprawdź, czy nowe hasło i potwierdzenie są takie same
-        if new_password == confirm_password:
-            # Zmień hasło użytkownika
-            password = new_password
-            # Zapisz zmiany w bazie danych
-
-            # Przekieruj użytkownika na stronę sukcesu
-            return render_template('password_changed.html')
+        if tmp_username == username and tmp_password == password:
+            app.logged_in = True
+            return render_template('panel.html')
         else:
-            # Hasło i potwierdzenie nie są takie same
-            error = 'New password and confirm password do not match'
-    else:
-        # Bieżące hasło jest nieprawidłowe
-        error = 'Invalid current password'
+            return render_template('index.html', error='Invalid username or password')
 
-    # Jeśli wystąpił błąd, wyświetl formularz z komunikatem o błędzie
-    flash('Incorrect login or password', 'error')
-    return render_template('index.html', error=error)
+@app.route('/changed_password.html', methods=['POST', 'GET'])
+def changed_password():
+    global password
+    if request.method == 'POST':
+        old_password = request.form['current_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if old_password == password:
+            if new_password == confirm_password:
+                password = new_password
+                return render_template('changed_password.html', success='Password changed successfully')
+            else:
+                return render_template('panel.html', error='Passwords do not match')
+        else:
+            return render_template('panel.html', error='Invalid password')
+    else:
+        return render_template('panel.html')
