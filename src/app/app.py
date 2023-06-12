@@ -59,17 +59,14 @@ def panel():
 def changed_password():
     global password
     if request.method == 'POST':
-        old_password = request.form['current_password']
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
 
-        if old_password == password:
-            if new_password == confirm_password:
-                password = new_password
-                return render_template('changed_password.html', success='Password changed successfully')
-            else:
-                return render_template('panel.html', error='Passwords do not match')
+        
+        if new_password == confirm_password:
+            password = new_password
+            return render_template('changed_password.html', success='Password changed successfully')
         else:
-            return render_template('panel.html', error='Invalid password')
+            return render_template('panel.html', error='Passwords do not match')
     else:
         return render_template('panel.html')
