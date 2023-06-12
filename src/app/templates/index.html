@@ -2,7 +2,7 @@
     <head>
         <div>
             <title>Central Humidity Updates for Journalists</title>
-            <link rel="stylesheet" href="../static/style.css">
+            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         </div>
     </head>
 
@@ -23,11 +23,15 @@
 
             <div id="login">
                 <h2 id="header2">Login</h2>
-                {% if error %}
-                <h3 id="header3">
-                    {{ error }}
-                </h3>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+
+                    {% for message in messages %}
+                        <h3 id="header3">{{ message }}</h3>
+                    {% endfor %}
+                    
                 {% endif %}
+                {% endwith %}
                 <form action="panel.html" method="post">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" placeholder="Username" required><br><br>
