@@ -16,13 +16,17 @@
         
         <div id="content-container">
             <div id="menu">
+                <a href="index.html">Home</a>
                 <a href="#">Change password</a>
-                <a href="#">Account details</a>
-                <a href="#">Logout</a>
+                <a href="https://github.com/hue1337">Easter egg</a>
             </div>
 
             <div id="login">
-                <form action="/changed_password.html" method="post">
+                <form action="/changed_password.html" method="get">
+                    {% if not passwords_match %}
+                        <p id="header3">Passwords do not match. Please try again.</p>
+                    {% endif %}
+            
                     <label id="label1" for="new_password">New Password:</label>
                     <input type="password" id="new_password" name="new_password" value="{{new_password}}" required><br><br>
                     <label id="label1" for="confirm_password">Confirm New Password:</label>

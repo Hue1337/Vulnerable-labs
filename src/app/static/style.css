@@ -74,6 +74,11 @@ body {
     color: #ffffff;
 }
 
+#visible_password {
+    margin: 0;
+    font-size: 15px;
+    color: #059400;
+}
 a {
     font-size: 18;
     text-decoration: none;
