@@ -42,3 +42,8 @@ def changed_password():
     else:
         passwords_match = False
         return render_template('panel.html', passwords_match=passwords_match)
+
+@app.route('/xss.html', methods=['POST', 'GET'])
+def xss():
+    new_name = request.args.get('your_name')
+    return render_template('xss.html', name=new_name)

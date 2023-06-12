@@ -79,6 +79,13 @@ body {
     font-size: 15px;
     color: #059400;
 }
+
+#your_name {
+    margin: 30px;
+    font-size: 15px;
+    color: #2b94ba;
+}
+
 a {
     font-size: 18;
     text-decoration: none;
