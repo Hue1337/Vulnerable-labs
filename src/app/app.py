@@ -55,18 +55,30 @@ def panel():
         else:
             return render_template('index.html', error='Invalid username or password')
 
-@app.route('/changed_password.html', methods=['POST', 'GET'])
-def changed_password():
-    global password
-    if request.method == 'POST':
-        new_password = request.form['new_password']
-        confirm_password = request.form['confirm_password']
+# @app.route('/changed_password.html', methods=['POST', 'GET'])
+# def changed_password():
+#     global password
+#     if request.method == 'POST':
+#         new_password = request.form['new_password']
+#         confirm_password = request.form['confirm_password']
 
         
-        if new_password == confirm_password:
-            password = new_password
-            return render_template('changed_password.html', success='Password changed successfully')
-        else:
-            return render_template('panel.html', error='Passwords do not match')
+#         if new_password == confirm_password:
+#             password = new_password
+#             return render_template('changed_password.html', success='Password changed successfully')
+#         else:
+#             return render_template('panel.html', error='Passwords do not match')
+#     else:
+#         return render_template('panel.html')
+    
+@app.route('/changed_password.html', methods=['POST','GET'])
+def changed_password():
+    global password
+    password_value = request.cookies.get('new_password')
+    password_confirm_value = request.cookies.get('confirm_password')
+
+    if password_value == password_confirm_value:
+        password = password_value
+        return render_template('changed_password.html', success='Password changed successfully')
     else:
-        return render_template('panel.html')
+        return render_template('panel.html', error='Passwords do not match')
