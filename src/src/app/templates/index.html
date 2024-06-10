@@ -1,0 +1,30 @@
+<html> 
+    <head>
+        <div>
+            <title>Central Humidity Updates for Journalists</title>
+            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        </div>
+    </head>
+
+    <body>
+        <div id="top-header">
+            <center>
+                <h1>Central Humidity Updates for Journalists</h1>
+                <p>Home page</p>
+            </center>   
+        </div>
+        
+        <div id="content-container">
+            <div id="menu">
+                <a href="index.html">Home</a>
+                <a href="panel.html">Change password</a>
+                <a href="xss.html">Easter egg</a>
+            </div>
+
+            <div id="login">
+                <h2 id="header2">Current password:</h2><br><br>
+                <h3 id="visible_password">{{visible_password}}</h3>
+            </div>
+        </div>
+    </body>
+</html>
