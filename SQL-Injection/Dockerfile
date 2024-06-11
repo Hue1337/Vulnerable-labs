@@ -1,9 +1,11 @@
 # Dockertfile, Image, Container
-FROM python:3.8
+FROM python:3.8-slim
 
-ADD app.py .
+WORKDIR /app
+COPY ./ /app
 
-RUN pip3 install requests flask
-RUN pip3 install requests sqlite3
+RUN pip install -r requirements.txt
+EXPOSE 80
 
-CMD ["python3", "./app.py"]
+ENTRYPOINT ["python"]
+CMD ["app.py", "-p", "80"]
